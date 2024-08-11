@@ -1,4 +1,18 @@
-## Simple Video Player
+# Simple Video Player
+
+## x-rodionov's patch
+
+to build and run
+
+* npm install
+
+* npm run build
+
+* publish /out folder on netlify
+
+* open web app by given link
+
+## original text
 
 > Why download a video player when you can simply play your videos on the browser
 
