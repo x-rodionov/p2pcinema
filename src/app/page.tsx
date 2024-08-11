@@ -1,7 +1,6 @@
 import logo from '@/assets/logo.png';
 import './App.css';
 import VideoSelector from '@/components/VideoSelector/VideoSelector';
-import Fork from '@/components/Fork/Fork';
 
 export default function Home() {
     return (
@@ -13,7 +12,6 @@ export default function Home() {
                     </div>
                     <span className='App-name'>Simple Video Player</span>
                 </div>
-                <Fork />
             </header>
             <div className='App-body'>
                 <div className='App-information'>
