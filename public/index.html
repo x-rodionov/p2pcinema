@@ -51,9 +51,14 @@
 </head>
 
 <body>
-	<div id="wrapper" style="display: flex;">
+	<div id="wrapper" style="display: flex;"
+		ondrop="onDrop(event);"
+		ondragenter="onDrag(event);"
+		ondragover="onDrag(event);"
+		ondragleave="onDrag(event)"
+	>
 		<div id="container">
-			<video id="cinema_video" style="height: auto; width: 100%;" autoplay src="example.mov"></video>
+			<video id="cinema_video" style="height: auto; width: 100%;"></video>
 		</div>
 	</div>
 	<div id="chat">
@@ -101,6 +106,31 @@
 				}
 			}
 		});
+
+		const onDrag = (e) => {
+			console.log('dragging');
+			e.preventDefault();
+			e.stopPropagation();
+			if (e.type === 'dragenter' || e.type === 'dragover') {
+				document.getElementById("cinema_video").style.border = "4px solid blue";
+			} else if (e.type === 'dragleave') {
+				document.getElementById("cinema_video").style.border = "";
+			}
+		};
+		const onDrop = (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			if (!e.dataTransfer.files || !e.dataTransfer.files[0]) {
+				return;
+			}
+			const file = e.dataTransfer.files[0];
+			const videoName = file.name;
+			const objectURL = URL.createObjectURL(file);
+			document.getElementById("cinema_video").src = objectURL;
+			document.getElementById("cinema_video").title = videoName;
+			document.getElementById("cinema_video").style.border = "";
+		};
+
 	</script>
 	<script>
 		const cinema_video = document.getElementById("cinema_video");
