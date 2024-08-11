@@ -33,7 +33,7 @@ const Screen = () => {
                     <div className='App-icon'>
                         <img src={logo.src} width='15px' alt='logo' />
                     </div>
-                    <span className='App-name'>Simple Video Player</span>
+                    <span className='App-name'>Simple Video Player: p2p cinema</span>
                 </div>
             </header>
             <div className='App-body'>

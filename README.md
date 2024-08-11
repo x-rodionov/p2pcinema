@@ -1,4 +1,4 @@
-# Simple Video Player
+# Simple Video Player: p2p cinema
 
 ## x-rodionov's patch
 
