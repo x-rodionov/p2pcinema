@@ -68,8 +68,11 @@
 			<span>my id:</span>
 			<input id="my_id" class="readonly-input" type="text" size="40" readonly>
 			<input id="my_nickname" type="text" size="12" placeholder="nickname">
-			<button onclick="copy_link_to_clipboard()">
-				copy invite link for player 2
+			<button onclick="copy_link_to_clipboard(false)">
+				copy invite link for player 2 normal
+			</button>
+			<button onclick="copy_link_to_clipboard(true)">
+				copy invite link for player 2 wide
 			</button>
 		</p>
 		<p>
@@ -242,9 +245,9 @@
 			}
 		}
 		initialize_fields();
-		async function copy_link_to_clipboard() {
+		async function copy_link_to_clipboard(wide) {
 			const id = document.querySelector('#my_id').value;
-			await navigator.clipboard.writeText(`${location.origin + location.pathname}?peer_id=${id}`);
+			await navigator.clipboard.writeText(`${location.origin + location.pathname}?peer_id=${id}${wide ? "&wide=true" : ""}`);
 		}
 		function format_message(message) {
 			const nickname = document.querySelector('#my_nickname').value;
