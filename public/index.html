@@ -175,7 +175,7 @@
 			document.querySelector(`#${target}`).appendChild(new_message);
 		}
 
-		let interval_to_clear, is_game_server = true, client_just_before_screencast, main_connection, use_video;
+		let interval_to_clear, is_game_server = true, client_just_before_screencast, main_connection, use_video, proportions;
 		async function initialize_fields() {
 			function init_text(id) {
 				const field_element = document.querySelector(`#${id}`);
@@ -189,10 +189,13 @@
 
 			const params = new URL(location.href).searchParams;
 			const peer_id = params.get('peer_id');
+			const wide = params.get('wide');
 			if (peer_id) {
 				document.querySelector('#peer_id').value = peer_id;
 				is_game_server = false;
 			}
+			proportions = wide ? {two: {video: "80%", camera: "20%"}, three: {video: "60%", camera: "20%"}}
+				: {two: {video: "50%", camera: "50%"}, three: {video: "33.33%", camera: "33.33%"}};
 
 			try {
 				const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -303,11 +306,11 @@
 				console.log("connection complete");
 				document.getElementById('chat').style.display = "none";
 				document.getElementById('incoming_screencast').style.height = "auto";
-				document.getElementById('incoming_screencast').style.width = "33.33%";
+				document.getElementById('incoming_screencast').style.width = proportions.three.video;
 				document.getElementById('incoming_video').style.height = "auto";
-				document.getElementById('incoming_video').style.width = "33.33%";
+				document.getElementById('incoming_video').style.width = proportions.three.camera;
 				document.getElementById('selfie_video').style.height = "auto";
-				document.getElementById('selfie_video').style.width = "33.33%";
+				document.getElementById('selfie_video').style.width = proportions.three.camera;
 				document.getElementById('incoming_video').onclick = (e) => e.target.requestPictureInPicture();
 				document.getElementById('selfie_video').onclick = (e) => e.target.requestPictureInPicture();
 			}
@@ -425,12 +428,12 @@
 			}
 			try {
 				const outgoing_call = my_peer.call(peer_id, stream);
-				document.getElementById('container').style.width = '33.33%';
+				document.getElementById('container').style.width = proportions.three.video;
 				document.getElementById("incoming_screencast").remove();
 				document.getElementById("incoming_video").style.height = "auto";
-				document.getElementById("incoming_video").style.width = "33.33%";
+				document.getElementById("incoming_video").style.width = proportions.three.camera;
 				document.getElementById("selfie_video").style.height = "auto";
-				document.getElementById("selfie_video").style.width = "33.33%";
+				document.getElementById("selfie_video").style.width = proportions.three.camera;
 				document.getElementById("chat").style.display = "none";
 				document.getElementById('incoming_video').onclick = (e) => e.target.requestPictureInPicture();
 				document.getElementById('selfie_video').onclick = (e) => e.target.requestPictureInPicture();
@@ -448,20 +451,20 @@
 			const incoming_screencast = document.getElementById('incoming_screencast');
 			const incoming_video = document.getElementById('incoming_video');
 			const selfie_video = document.getElementById('selfie_video');
-			container && (container.style.width = "50%");
-			incoming_screencast && (incoming_screencast.style.width = "50%");
-			incoming_video.style.width = (e.target.id === incoming_video.id) ? "0" : "50%";
-			selfie_video.style.width = (e.target.id === selfie_video.id) ? "0" : "50%";
+			container && (container.style.width = proportions.two.video);
+			incoming_screencast && (incoming_screencast.style.width = proportions.two.video);
+			incoming_video.style.width = (e.target.id === incoming_video.id) ? "0" : proportions.two.camera;
+			selfie_video.style.width = (e.target.id === selfie_video.id) ? "0" : proportions.two.camera;
 		}, false);
 		document.addEventListener("leavepictureinpicture", (e) => {
 			const container = document.getElementById('container');
 			const incoming_screencast = document.getElementById('incoming_screencast');
 			const incoming_video = document.getElementById('incoming_video');
 			const selfie_video = document.getElementById('selfie_video');
-			container && (container.style.width = "33.33%");
-			incoming_screencast && (incoming_screencast.style.width = "33.33%");
-			incoming_video.style.width = "33.33%";
-			selfie_video.style.width = "33.33%";
+			container && (container.style.width = proportions.three.video);
+			incoming_screencast && (incoming_screencast.style.width = proportions.three.video);
+			incoming_video.style.width = proportions.three.camera;
+			selfie_video.style.width = proportions.three.camera;
 		}, false);
 	</script>
 </html>
