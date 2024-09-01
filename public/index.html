@@ -58,7 +58,9 @@
 		ondragleave="onDrag(event)"
 	>
 		<div id="container">
-			<video id="cinema_video" style="height: auto; width: 100%;"></video>
+			<video id="cinema_video" style="height: auto; width: 100%;">
+				<track id="cinema_subtitles" label="subtitles" kind="subtitles" srclang="en" default />
+			</video>
 		</div>
 	</div>
 	<div id="chat">
@@ -72,10 +74,6 @@
 		</p>
 		<p>
 			<input id="peer_id" type="text" size="40" placeholder="peer id" readonly>
-		</p>
-		<p style="background-color: gray;">
-			Subtitles:
-			<input type="file" accept=".vtt" style="background-color: gray;">
 		</p>
 		<table>
 			<tbody>
@@ -128,10 +126,18 @@
 				return;
 			}
 			const file = e.dataTransfer.files[0];
-			const videoName = file.name;
-			const objectURL = URL.createObjectURL(file);
-			document.getElementById("cinema_video").src = objectURL;
-			document.getElementById("cinema_video").title = videoName;
+			const file_name = file.name;
+			const object_url = URL.createObjectURL(file);
+			if (file_name.endsWith(".vtt")) {
+				document.getElementById("cinema_video").dataset.subtitles = file_name;
+				document.getElementById("cinema_subtitles").src = object_url;
+			}
+			else {
+				document.getElementById("cinema_video").dataset.video = file_name;
+				document.getElementById("cinema_video").src = object_url;
+			}
+			const {video, subtitles} = document.getElementById("cinema_video").dataset;
+			document.getElementById("cinema_video").title = `${video || "none"} + ${subtitles || "none"}`;
 			document.getElementById("cinema_video").style.border = "";
 		};
 
